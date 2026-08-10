@@ -130,7 +130,7 @@ export default function Portfolio() {
             return (
               <div
                 key={project.id}
-                className="w-80 sm:w-[480px] h-[460px] rounded-3xl bg-white border border-zinc-200 p-6 sm:p-8 flex flex-col justify-between relative group overflow-hidden select-none hover:border-emerald-500/40 transition-all duration-500 shadow-xl"
+                className="w-80 sm:w-[480px] h-[460px] rounded-3xl bg-white border border-zinc-200 p-6 sm:p-8 flex flex-col justify-between relative group overflow-hidden hover:border-emerald-500/40 transition-all duration-500 shadow-xl"
               >
                 {/* Glow Background */}
                 <div

@@ -22,7 +22,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-zinc-50 border-t border-zinc-200 pt-20 pb-10 overflow-hidden select-none">
+    <footer className="relative bg-zinc-50 border-t border-zinc-200 pt-20 pb-10 overflow-hidden">
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-radial opacity-10 -z-10 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-6 md:px-12">
@@ -66,7 +66,15 @@ export default function Footer() {
               <a href="#services" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Our Services</a>
               <a href="#process" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Process & Flow</a>
               <a href="#portfolio" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Portfolio Work</a>
-              <a href="#faq" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Got Questions</a>
+              <a href="#reviews" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Google Reviews</a>
+              <a
+                href="https://www.google.com/maps/place/Chameleon+IT+Academy+%7C+Digital+Marketing+%7C+Web+Developing+%7C+Graphic+Designing./@11.2831612,76.2357097,17z/data=!3m1!4b1!4m6!3m5!1s0x3ba63b25cc6dec37:0x865b8d22ffd054f2!8m2!3d11.2831612!4d76.2357097!16s%2Fg%2F11q4bqk33t?entry=ttu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-600 font-semibold hover:underline"
+              >
+                📍 Nilambur, Kerala (Map)
+              </a>
             </div>
           </div>
 

@@ -5,7 +5,6 @@ import { AnimatePresence } from "framer-motion";
 
 // Core Providers & Layout elements
 import LenisProvider from "@/components/LenisProvider";
-import CustomCursor from "@/components/CustomCursor";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 
@@ -30,8 +29,6 @@ export default function Home() {
 
   return (
     <LenisProvider>
-      <CustomCursor />
-      
       {/* Premium Loader screen */}
       <AnimatePresence mode="wait">
         {isLoading && <Loader onComplete={() => setIsLoading(false)} />}

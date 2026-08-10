@@ -43,7 +43,7 @@ export default function Technologies() {
   const filteredTech = techStack.filter((t) => t.category === activeTab);
 
   return (
-    <section id="technologies" className="relative py-24 bg-white overflow-hidden select-none border-t border-black/5">
+    <section id="technologies" className="relative py-24 bg-white overflow-hidden border-t border-black/5">
       <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-glow-radial opacity-20 -translate-y-1/2 -z-10 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-6 md:px-12 flex flex-col gap-12 text-center items-center">

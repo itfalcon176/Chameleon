@@ -55,7 +55,7 @@ const team: TeamMember[] = [
 
 export default function Team() {
   return (
-    <section id="team" className="relative py-24 bg-zinc-50 overflow-hidden select-none border-t border-black/5">
+    <section id="team" className="relative py-24 bg-zinc-50 overflow-hidden border-t border-black/5">
       <div className="absolute bottom-1/2 left-0 w-[400px] h-[400px] bg-glow-radial opacity-15 -z-10 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-6 md:px-12 flex flex-col gap-12 text-center items-center">

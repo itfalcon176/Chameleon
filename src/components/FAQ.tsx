@@ -40,7 +40,7 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="relative py-24 bg-white overflow-hidden select-none border-t border-black/5">
+    <section id="faq" className="relative py-24 bg-white overflow-hidden border-t border-black/5">
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-glow-radial opacity-15 -translate-y-1/2 -z-10 pointer-events-none" />
 
       <div className="mx-auto max-w-4xl px-6 md:px-12 flex flex-col gap-12 text-left">

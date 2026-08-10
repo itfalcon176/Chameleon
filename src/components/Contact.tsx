@@ -27,7 +27,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-36 bg-white overflow-hidden select-none border-t border-black/5">
+    <section id="contact" className="relative py-24 md:py-36 bg-white overflow-hidden border-t border-black/5">
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-glow-radial opacity-15 -z-10 pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
@@ -57,8 +57,8 @@ export default function Contact() {
                 <span className="font-sans text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">
                   Email Us
                 </span>
-                <a href="mailto:hello@chameleon.io" className="font-sans text-sm font-bold text-zinc-900 hover:text-emerald-600 transition-colors duration-300">
-                  hello@chameleon.io
+                <a href="mailto:info@chameleon-it.com" className="font-sans text-sm font-bold text-zinc-900 hover:text-emerald-600 transition-colors duration-300">
+                  info@chameleon-it.com
                 </a>
               </div>
             </div>
@@ -69,10 +69,10 @@ export default function Contact() {
               </div>
               <div className="flex flex-col">
                 <span className="font-sans text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">
-                  Call Tech Lab
+                  Call Tech & Academy Lab
                 </span>
-                <a href="tel:+919876543210" className="font-sans text-sm font-bold text-zinc-900 hover:text-cyan-600 transition-colors duration-300">
-                  +91 9876 543 210
+                <a href="tel:+916235660067" className="font-sans text-sm font-bold text-zinc-900 hover:text-cyan-600 transition-colors duration-300">
+                  +91 6235 660 067
                 </a>
               </div>
             </div>
@@ -83,12 +83,32 @@ export default function Contact() {
               </div>
               <div className="flex flex-col">
                 <span className="font-sans text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">
-                  Chameleon HQs
+                  Chameleon Location
                 </span>
-                <span className="font-sans text-sm text-zinc-900 font-semibold">
-                  Kasargod, Kerala, India
-                </span>
+                <a
+                  href="https://www.google.com/maps/place/Chameleon+IT+Academy+%7C+Digital+Marketing+%7C+Web+Developing+%7C+Graphic+Designing./@11.2831612,76.2357097,17z/data=!3m1!4b1!4m6!3m5!1s0x3ba63b25cc6dec37:0x865b8d22ffd054f2!8m2!3d11.2831612!4d76.2357097!16s%2Fg%2F11q4bqk33t?entry=ttu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-sm text-zinc-900 hover:text-emerald-600 font-semibold transition-colors flex items-center gap-1.5"
+                >
+                  Zain Tower, 1st Floor, Nilambur, Kerala 679329
+                  <ArrowUpRight className="h-3.5 w-3.5 text-emerald-600" />
+                </a>
               </div>
+            </div>
+
+            {/* Google Map Mini Embed Box */}
+            <div className="mt-2 rounded-2xl overflow-hidden border border-zinc-200 shadow-sm h-40 w-full relative">
+              <iframe
+                title="Chameleon Google Map"
+                src="https://maps.google.com/maps?q=11.2831612,76.2357097&hl=en&z=16&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
