@@ -56,11 +56,11 @@ export default function Philosophy() {
       },
     });
 
-    // Phase 1: Scroll-linked word highlight & synchronized progressive logo reveal
+    // Phase 1: Scroll-linked word highlight & synchronized progressive logo revel
     // Logo is faint (0.15) at 'At Chameleon', reaches ~50% at 'and drives', and hits 100% only at 'build it'
     tl.fromTo(
       ".chameleon-scroll-logo",
-      { opacity: 0.15, scale: 0.9, x: -15 },
+      { opacity: 0.155, scale: 0.10, x: -15 },
       { opacity: 1, scale: 1, x: 0, duration: 3.2, ease: "power1.in" },
       0
     );
