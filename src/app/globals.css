@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --accent-color: #00c078; /* Vivid Chameleon Emerald on Light */
+  --accent-glow: rgba(0, 192, 120, 0.16);
+  --accent-gradient-start: #00c078;
+  --accent-gradient-end: #0284c7; /* Vivid Cyan Blue */
+  --accent-gradient-purple: #7c3aed; /* Modern Violet */
+  --bg-color: #ffffff;
+  --foreground-color: #09090b;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(0, 0, 0, 0.08);
+}
+
+/* Theme Configuration for Tailwind v4 */
+@theme {
+  --color-accent: var(--accent-color);
+  --color-accent-glow: var(--accent-glow);
+  --color-bg-base: var(--bg-color);
+  --color-text-base: var(--foreground-color);
+  --color-card-base: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 20s linear infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+  }
+}
+
+/* Base resets & typography */
+@layer base {
+  html, body {
+    background-color: var(--bg-color);
+    color: var(--foreground-color);
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Outfit", sans-serif;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .glassmorphism {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+  }
+  
+  .glassmorphism-hover:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.08), 0 0 20px var(--accent-glow);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px var(--accent-glow);
+  }
+
+  .bg-glow-radial {
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  }
+
+  /* Custom hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Lenis smooth scroll recommended styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Custom Cursor styling */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-cursor-hover .custom-cursor {
+  width: 16px;
+  height: 16px;
+  background-color: var(--accent-color);
+  opacity: 0.5;
+}
+
+.custom-cursor-hover .custom-cursor-ring {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: transparent;
+}
