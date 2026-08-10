@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Sparkles, Layers, Rocket, Compass } from "lucide-react";
@@ -9,302 +10,12 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Configuration for morphing particle count and 3D projection
-const PARTICLE_COUNT = 750;
-const FOCUS = 320;
-
-interface Particle {
-  x: number;
-  y: number;
-  z: number;
-  targetX: number;
-  targetY: number;
-  targetZ: number;
-  color: string;
-  targetColor: string;
-  size: number;
-  baseSize: number;
-  alpha: number;
-}
-
 export default function Philosophy() {
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [activeSlide, setActiveSlide] = useState(0); // 0 = Statement, 1 = Design, 2 = Build, 3 = Market
-
-  // References for Canvas Animation Loop
-  const particlesRef = useRef<Particle[]>([]);
   const activeSlideRef = useRef(0);
-  const rotationX = useRef(0);
-  const rotationY = useRef(0);
-  const targetRotationX = useRef(0);
-  const targetRotationY = useRef(0);
-
-  // Initialize particles once
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const width = canvas.width || 1200;
-    const height = canvas.height || 800;
-    const particles: Particle[] = [];
-
-    const logoPalette = [
-      "rgba(0, 192, 120, 0.85)", // Chameleon Emerald
-      "rgba(2, 132, 199, 0.85)", // Cyber Cyan
-      "rgba(124, 58, 237, 0.85)", // Spectrum Violet
-      "rgba(236, 72, 153, 0.85)", // Neon Pink
-    ];
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const x = (Math.random() - 0.5) * width;
-      const y = (Math.random() - 0.5) * height;
-      const z = (Math.random() - 0.5) * 250;
-      const col = logoPalette[i % logoPalette.length];
-      const sz = 1.5 + Math.random() * 2.2;
-
-      particles.push({
-        x,
-        y,
-        z,
-        targetX: x,
-        targetY: y,
-        targetZ: z,
-        color: col,
-        targetColor: col,
-        size: sz,
-        baseSize: sz,
-        alpha: 0.4 + Math.random() * 0.5,
-      });
-    }
-
-    particlesRef.current = particles;
-  }, []);
-
-  // Update particle positions based on active slide
-  const updateTargets = (slide: number) => {
-    activeSlideRef.current = slide;
-    const canvas = canvasRef.current;
-    if (!canvas || particlesRef.current.length === 0) return;
-
-    const w = canvas.width / (window.devicePixelRatio || 1);
-    const h = canvas.height / (window.devicePixelRatio || 1);
-    const particles = particlesRef.current;
-
-    if (slide === 0) {
-      // Dispersed ambient vortex cloud
-      particles.forEach((p, i) => {
-        const angle = (i / PARTICLE_COUNT) * Math.PI * 8;
-        const radius = 50 + (i / PARTICLE_COUNT) * Math.min(w, h) * 0.45;
-        p.targetX = Math.cos(angle) * radius;
-        p.targetY = Math.sin(angle) * (radius * 0.6);
-        p.targetZ = (Math.random() - 0.5) * 200;
-        p.targetColor = i % 2 === 0 ? "rgba(0, 192, 120, 0.75)" : "rgba(2, 132, 199, 0.75)";
-      });
-    } else if (slide === 1) {
-      // Butterfly / Morphing curve points (Design)
-      particles.forEach((p, i) => {
-        const t = (i / PARTICLE_COUNT) * Math.PI * 12;
-        const r = Math.exp(Math.sin(t)) - 2 * Math.cos(4 * t) + Math.pow(Math.sin((2 * t - Math.PI) / 24), 5);
-        const sizeFactor = Math.min(w, h) * 0.16;
-        p.targetX = r * Math.sin(t) * sizeFactor;
-        p.targetY = -r * Math.cos(t) * sizeFactor;
-        p.targetZ = Math.sin(t * 5) * 30;
-        p.targetColor = i % 2 === 0 ? "rgba(236, 72, 153, 0.9)" : "rgba(124, 58, 237, 0.9)";
-      });
-    } else if (slide === 2) {
-      // Fibonacci Sphere points (Build)
-      particles.forEach((p, i) => {
-        const y = 1 - (i / (PARTICLE_COUNT - 1)) * 2;
-        const radius = Math.sqrt(1 - y * y);
-        const theta = i * Math.PI * (3 - Math.sqrt(5));
-        const sphereScale = Math.min(w, h) * 0.28;
-        p.targetX = Math.cos(theta) * radius * sphereScale;
-        p.targetY = y * sphereScale;
-        p.targetZ = Math.sin(theta) * radius * sphereScale;
-        p.targetColor = i % 2 === 0 ? "rgba(2, 132, 199, 0.9)" : "rgba(0, 192, 120, 0.9)";
-      });
-    } else if (slide === 3) {
-      // 3D Growth Arrow (Market)
-      particles.forEach((p, i) => {
-        let tx = 0;
-        let ty = 0;
-        let tz = 0;
-        const arrowScale = Math.min(w, h) * 0.28;
-
-        if (i < PARTICLE_COUNT * 0.5) {
-          const progress = i / (PARTICLE_COUNT * 0.5);
-          const angle = i * 2.4;
-          const shaftRadius = 12;
-          tx = Math.cos(angle) * shaftRadius;
-          ty = -90 + progress * 110;
-          tz = Math.sin(angle) * shaftRadius;
-        } else {
-          const progress = (i - PARTICLE_COUNT * 0.5) / (PARTICLE_COUNT * 0.5);
-          const angle = i * 2.4;
-          const coneRadius = 32 * (1 - progress);
-          tx = Math.cos(angle) * coneRadius;
-          ty = 20 + progress * 90;
-          tz = Math.sin(angle) * coneRadius;
-        }
-
-        p.targetX = tx * (arrowScale / 120);
-        p.targetY = -ty * (arrowScale / 120);
-        p.targetZ = tz * (arrowScale / 120);
-        p.targetColor = i % 2 === 0 ? "rgba(0, 192, 120, 0.95)" : "rgba(245, 158, 11, 0.9)";
-      });
-    }
-  };
-
-  useEffect(() => {
-    updateTargets(activeSlide);
-  }, [activeSlide]);
-
-  // Mouse tilt tracking
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-
-      targetRotationY.current = x * 0.35;
-      targetRotationX.current = -y * 0.35;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  // Main Canvas Rendering Loop
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animId: number;
-    let time = 0;
-
-    const resizeCanvas = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = parent.clientWidth * dpr;
-      canvas.height = parent.clientHeight * dpr;
-      canvas.style.width = `${parent.clientWidth}px`;
-      canvas.style.height = `${parent.clientHeight}px`;
-      ctx.scale(dpr, dpr);
-      updateTargets(activeSlideRef.current);
-    };
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    const draw = () => {
-      time += 0.015;
-      const dpr = window.devicePixelRatio || 1;
-      const w = canvas.width / dpr;
-      const h = canvas.height / dpr;
-
-      // CLEAN WHITE CLEAR - Ensures section stays bright and pure white!
-      ctx.clearRect(0, 0, w, h);
-
-      // Smooth camera tilt rotation
-      rotationX.current += (targetRotationX.current - rotationX.current) * 0.08;
-      rotationY.current += (targetRotationY.current - rotationY.current) * 0.08;
-
-      const cosX = Math.cos(rotationX.current);
-      const sinX = Math.sin(rotationX.current);
-      const cosY = Math.cos(rotationY.current + (activeSlideRef.current === 2 ? time * 0.25 : time * 0.05));
-      const sinY = Math.sin(rotationY.current + (activeSlideRef.current === 2 ? time * 0.25 : time * 0.05));
-
-      const particles = particlesRef.current;
-
-      // 3D rotation & depth mapping
-      const rotatedParticles = particles.map((p) => {
-        p.x += (p.targetX - p.x) * 0.09;
-        p.y += (p.targetY - p.y) * 0.09;
-        p.z += (p.targetZ - p.z) * 0.09;
-
-        let currentX = p.x;
-        let currentY = p.y;
-        let currentZ = p.z;
-
-        if (activeSlideRef.current === 1) {
-          const flap = Math.abs(Math.sin(time * 3.5));
-          currentX = p.x * (0.3 + 0.7 * flap);
-          currentZ = p.z + Math.cos(time * 3.5) * Math.abs(p.x) * 0.35;
-        }
-
-        // 3D Rotations
-        let rx = currentX * cosY - currentZ * sinY;
-        let rz = currentX * sinY + currentZ * cosY;
-
-        let ry = currentY * cosX - rz * sinX;
-        rz = currentY * sinX + rz * cosX;
-
-        return { rx, ry, rz, original: p };
-      });
-
-      // Sort back-to-front
-      rotatedParticles.sort((a, b) => b.rz - a.rz);
-
-      // Render particles
-      rotatedParticles.forEach(({ rx, ry, rz, original }) => {
-        const scale = FOCUS / (FOCUS + rz);
-        const px = rx * scale + w / 2;
-        const py = ry * scale + h / 2;
-
-        if (px < 0 || px > w || py < 0 || py > h) return;
-
-        const size = Math.max(0.6, original.size * scale);
-
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, Math.PI * 2);
-        ctx.fillStyle = original.targetColor;
-        ctx.fill();
-      });
-
-      // Plexus lines on Build sphere
-      if (activeSlideRef.current === 2) {
-        ctx.strokeStyle = "rgba(2, 132, 199, 0.12)";
-        ctx.lineWidth = 0.75;
-
-        for (let i = 0; i < rotatedParticles.length; i += 6) {
-          const pi = rotatedParticles[i];
-          const scaleI = FOCUS / (FOCUS + pi.rz);
-          const pxI = pi.rx * scaleI + w / 2;
-          const pyI = pi.ry * scaleI + h / 2;
-
-          for (let j = i + 1; j < Math.min(i + 7, rotatedParticles.length); j++) {
-            const pj = rotatedParticles[j];
-            const dist = Math.hypot(pi.rx - pj.rx, pi.ry - pj.ry, pi.rz - pj.rz);
-            if (dist < 48) {
-              const scaleJ = FOCUS / (FOCUS + pj.rz);
-              const pxJ = pj.rx * scaleJ + w / 2;
-              const pyJ = pj.ry * scaleJ + h / 2;
-
-              ctx.beginPath();
-              ctx.moveTo(pxI, pyI);
-              ctx.lineTo(pxJ, pyJ);
-              ctx.stroke();
-            }
-          }
-        }
-      }
-
-      animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
 
   // GSAP ScrollTrigger Configuration
   useEffect(() => {
@@ -338,20 +49,32 @@ export default function Philosophy() {
           }
 
           if (current !== activeSlideRef.current) {
+            activeSlideRef.current = current;
             setActiveSlide(current);
           }
         },
       },
     });
 
-    // Phase 1: Scroll-linked word highlight
-    tl.to(words, {
-      opacity: 1,
-      color: "#09090b",
-      stagger: 0.12,
-      duration: 1.6,
-      ease: "power1.out",
-    });
+    // Phase 1: Scroll-linked word highlight & smooth logo reveal on the left
+    tl.fromTo(
+      ".chameleon-scroll-logo",
+      { opacity: 0, scale: 0.5, x: -70, rotate: -20 },
+      { opacity: 1, scale: 1, x: 0, rotate: 0, duration: 1.4, ease: "power2.out" },
+      0
+    );
+
+    tl.to(
+      words,
+      {
+        opacity: 1,
+        color: "#09090b",
+        stagger: 0.12,
+        duration: 1.6,
+        ease: "power1.out",
+      },
+      0
+    );
 
     // Fade out statement container
     tl.to(".statement-container", {
@@ -422,12 +145,7 @@ export default function Philosophy() {
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] z-0 pointer-events-none opacity-50" />
 
-      {/* 2. Interactive Morphing 3D Particle Canvas */}
-      <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
-        <canvas ref={canvasRef} className="block w-full h-full" />
-      </div>
-
-      {/* 3. Modern Interactive Progress Dots (Bottom Indicator) */}
+      {/* 2. Modern Interactive Progress Dots (Bottom Indicator) */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 bg-zinc-100/90 backdrop-blur-md px-5 py-2.5 rounded-full border border-zinc-200 shadow-sm">
         {[
           { id: 0, label: "Philosophy" },
@@ -457,7 +175,7 @@ export default function Philosophy() {
         ))}
       </div>
 
-      {/* 4. Text & Content Overlays */}
+      {/* 3. Text & Content Overlays */}
       <div className="relative z-20 h-full w-full mx-auto max-w-7xl px-6 md:px-12 flex items-center justify-center">
         
         {/* Phase 1: Scroll-reveal Statement */}
@@ -465,6 +183,27 @@ export default function Philosophy() {
           ref={triggerRef}
           className="statement-container absolute inset-x-6 md:inset-x-12 flex flex-col justify-center items-center text-center max-w-5xl mx-auto"
         >
+          {/* Chameleon Logo emerging smoothly on scroll on the left */}
+          <div className="chameleon-scroll-logo absolute -left-4 sm:-left-12 lg:-left-24 top-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none opacity-0 z-20">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full bg-white/95 backdrop-blur-xl border border-zinc-200/90 shadow-[0_20px_50px_-10px_rgba(0,192,120,0.25)] flex items-center justify-center p-3">
+              {/* Outer soft multi-color glow */}
+              <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-emerald-400/25 via-cyan-400/25 to-purple-400/20 blur-xl opacity-80" />
+              {/* Rotating subtle dashed ring */}
+              <div className="absolute inset-1.5 rounded-full border border-dashed border-emerald-500/30 animate-spin-slow" />
+              {/* Official Mascot Image */}
+              <div className="relative w-16 h-16 sm:w-22 sm:h-22 lg:w-28 lg:h-28 flex items-center justify-center">
+                <Image
+                  src="/CH.png"
+                  alt="Chameleon Mascot"
+                  width={150}
+                  height={150}
+                  priority
+                  className="w-full h-full object-contain drop-shadow-[0_6px_16px_rgba(0,192,120,0.35)]"
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm">
             <Compass className="h-3.5 w-3.5" />
             Our Philosophy
