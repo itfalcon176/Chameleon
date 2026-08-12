@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowDown, Code, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowDown, Code, Sparkles, TrendingUp, ShieldCheck, Zap } from "lucide-react";
 import Magnetic from "./Magnetic";
 import ThreeBackground from "./ThreeBackground";
 
@@ -90,6 +90,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
+      id="hero"
       className="relative min-h-screen flex items-center justify-center pt-28 pb-16 bg-white overflow-hidden z-10"
     >
       {/* 3D WebGL Background Canvas */}
@@ -157,12 +158,13 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="flex flex-wrap items-center gap-4 mt-4"
+            className="flex flex-wrap items-center gap-4 mt-2"
           >
             <Magnetic>
               <a
                 href="#services"
                 className="rounded-full bg-zinc-950 px-8 py-4 font-sans text-sm font-semibold text-white hover:bg-accent hover:text-zinc-950 hover:shadow-[0_8px_25px_var(--accent-glow)] transition-all duration-300 shadow-md"
+                data-cursor="EXPLORE"
               >
                 Explore Solutions
               </a>
@@ -171,10 +173,38 @@ export default function Hero() {
               <a
                 href="#contact"
                 className="rounded-full border border-zinc-300 bg-white hover:bg-zinc-50 hover:border-zinc-400 px-8 py-4 font-sans text-sm font-semibold text-zinc-800 transition-all duration-300 shadow-sm"
+                data-cursor="COLLAB"
               >
                 Let&apos;s Collaborate
               </a>
             </Magnetic>
+          </motion.div>
+
+          {/* Stat Badges / Metrics Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55 }}
+            className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-200 mt-4 max-w-lg"
+          >
+            <div className="flex flex-col text-left">
+              <span className="font-display text-2xl md:text-3xl font-extrabold text-zinc-950 flex items-center gap-1">
+                100+ <Zap className="h-4 w-4 text-emerald-500 fill-emerald-500" />
+              </span>
+              <span className="font-sans text-xs text-zinc-500 font-semibold mt-0.5">Projects Delivered</span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="font-display text-2xl md:text-3xl font-extrabold text-zinc-950 flex items-center gap-1">
+                99.9% <ShieldCheck className="h-4 w-4 text-cyan-500" />
+              </span>
+              <span className="font-sans text-xs text-zinc-500 font-semibold mt-0.5">Native Speed</span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="font-display text-2xl md:text-3xl font-extrabold text-zinc-950 flex items-center gap-1">
+                #1 <TrendingUp className="h-4 w-4 text-purple-500" />
+              </span>
+              <span className="font-sans text-xs text-zinc-500 font-semibold mt-0.5">SEO Domination</span>
+            </div>
           </motion.div>
         </div>
 
@@ -185,6 +215,7 @@ export default function Hero() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={handleMouseLeave}
           className="lg:col-span-5 flex justify-center items-center relative mt-10 lg:mt-0 [perspective:1000px] cursor-pointer"
+          data-cursor="DRAG"
         >
           {/* Main Visual 3D Tilt Card */}
           <motion.div
@@ -211,7 +242,7 @@ export default function Hero() {
               className="absolute inset-8 rounded-full border border-cyan-500/20 pointer-events-none"
             />
 
-            {/* Subtle Orbiting Satellite Particle */}
+            {/* Orbiting Satellite Particle */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
@@ -232,14 +263,13 @@ export default function Hero() {
               }}
             />
 
-            {/* Inner mascot container - Clean without muddy background tints */}
+            {/* Inner mascot container */}
             <motion.div
               style={{
                 transform: `translateZ(${mascotZ}px)`,
               }}
               className="relative w-56 h-56 sm:w-68 sm:h-68 flex items-center justify-center z-10 select-none"
             >
-              {/* Standalone Official Chameleon Mascot from /CH.png */}
               <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center">
                 <Image
                   src="/CH.png"

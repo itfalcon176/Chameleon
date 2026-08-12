@@ -1,381 +1,268 @@
 "use client";
 
-import { useEffect, useRef, useState, ElementType } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Eye, Search, Layers, Radio, Rocket } from "lucide-react";
+import { Search, Eye, Layers, Radio, Rocket, BookOpen, CheckCircle2, ArrowRight } from "lucide-react";
+import { ElementType } from "react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-interface Step {
+interface NotebookPage {
   num: string;
   title: string;
+  subtitle: string;
   icon: ElementType;
   desc: string;
+  details: string[];
+  color: string;
+  paperBg: string;
 }
 
-const steps: Step[] = [
+const pages: NotebookPage[] = [
   {
     num: "01",
     title: "Discovery & Blueprint",
+    subtitle: "STEP 01 // OPERATIONAL ANALYSIS",
     icon: Search,
-    desc: "We start by analyzing your operations. We map user journeys, outline database boundaries, and write a thorough technical blueprint outlining exact specifications.",
+    desc: "We open our blueprint notebook by mapping your business operations. We document user journeys, define database schema boundaries, and outline exact technical specifications.",
+    details: ["Workflow & Operations Audit", "Database Schema Mapping", "Technical Architecture Specification"],
+    color: "#059669",
+    paperBg: "#ffffff",
   },
   {
     num: "02",
     title: "High-Fidelity Prototyping",
+    subtitle: "STEP 02 // FIGMA WIREFRAMES & DESIGN",
     icon: Eye,
     desc: "Our creative designers sketch grid guides, color schemes, and construct interactive Figma layouts. We validate usability before writing a single line of production code.",
+    details: ["Interactive Wireframe Layouts", "Brand Color & Type Tokens", "Usability Validation Prototypes"],
+    color: "#0284c7",
+    paperBg: "#fdfbf7",
   },
   {
     num: "03",
     title: "Adaptive Agile Coding",
+    subtitle: "STEP 03 // FULL-STACK DEVELOPMENT",
     icon: Layers,
-    desc: "We code standard-compliant Next.js websites, mobile layouts, and native desktop systems. We write clean TypeScript architecture, ensuring high performance.",
+    desc: "We code standard-compliant Next.js websites, mobile layouts, and native desktop systems. Clean TypeScript architecture ensuring blisteringly fast performance.",
+    details: ["Next.js & React 19 Speedhouse", "Native OS Executables (Tauri)", "Clean Modular Architecture"],
+    color: "#7c3aed",
+    paperBg: "#ffffff",
   },
   {
     num: "04",
     title: "Search Authority & SEO",
+    subtitle: "STEP 04 // RANK & PERFORMANCE AUDIT",
     icon: Radio,
-    desc: "We tweak Core Web Vitals, adjust schema structures, optimize headers, and build high-authority backlink channels to push your brand to the top of Google organic ranks.",
+    desc: "We tweak Core Web Vitals, adjust schema structures, optimize headers, and build high-authority backlink channels to push your brand to #1 on Google organic ranks.",
+    details: ["Core Web Vitals 100/100", "Structured Schema Graphs", "Organic Rank Elevation"],
+    color: "#db2777",
+    paperBg: "#fdfbf7",
   },
   {
     num: "05",
     title: "Event Launch & Promotion",
+    subtitle: "STEP 05 // GLOBAL LAUNCH & TRACTION",
     icon: Rocket,
     desc: "We launch your platform, run targeted ads across SMM, publish cinematic video packages, and coordinate virtual or physical events to gather customer traction.",
+    details: ["Omni-Channel Ad Funnels", "Cinematic Video Reels", "Live Onboarding Portals"],
+    color: "#ea580c",
+    paperBg: "#ffffff",
   },
 ];
 
-// Modern geometric blooming flower component
-function ModernFlower({ isActive }: { isActive: boolean }) {
-  return (
-    <svg
-      className="absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
-      style={{ left: "50%", top: "50%" }}
-      viewBox="0 0 100 100"
-    >
-      <defs>
-        <radialGradient id="flowerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-
-      {/* Soft background glow */}
-      <circle
-        cx="50"
-        cy="50"
-        r="32"
-        className={`transition-all duration-1000 ease-out origin-center ${
-          isActive ? "scale-100 opacity-100" : "scale-0 opacity-0"
-        }`}
-        fill="url(#flowerGlow)"
-      />
-
-      {/* Flower Petals (Staggered Bloom) */}
-      {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-        <path
-          key={i}
-          d="M 50 50 C 42 32, 45 14, 50 14 C 55 14, 58 32, 50 50"
-          fill="none"
-          stroke="url(#vineGradient)"
-          strokeWidth="1.5"
-          className="transition-all duration-1000 ease-out origin-center"
-          style={{
-            transform: `rotate(${angle}deg) scale(${isActive ? 1 : 0})`,
-            transformOrigin: "50px 50px",
-            transitionDelay: `${i * 60}ms`,
-            opacity: isActive ? 0.8 : 0,
-          }}
-        />
-      ))}
-
-      {/* Core seed */}
-      <circle
-        cx="50"
-        cy="50"
-        r="5"
-        className="fill-accent transition-transform duration-500 origin-center"
-        style={{ transform: `scale(${isActive ? 1.4 : 0.8})` }}
-      />
-    </svg>
-  );
-}
-
 export default function Process() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activePageIndex, setActivePageIndex] = useState(0);
 
-  const [activeSteps, setActiveSteps] = useState<boolean[]>([false, false, false, false, false]);
-  const [nodePositions, setNodePositions] = useState<number[]>([]);
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  // Sync window width
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    if (!containerRef.current) return;
 
-  // Measure node offsets relative to process section top
-  useEffect(() => {
-    const updatePositions = () => {
-      const container = containerRef.current;
-      if (!container) return;
+    const pageElements = pageRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (pageElements.length === 0) return;
 
-      const containerRect = container.getBoundingClientRect();
-      const positions = nodeRefs.current.map((node) => {
-        if (!node) return 0;
-        const rect = node.getBoundingClientRect();
-        return rect.top + rect.height / 2 - containerRect.top;
-      });
-      setNodePositions(positions);
-    };
+    const totalPages = pageElements.length;
 
-    // Delay slightly to let layout stabilize
-    const timer = setTimeout(updatePositions, 150);
-    window.addEventListener("resize", updatePositions);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", updatePositions);
-    };
-  }, [windowWidth]);
-
-  // Main scroll animations
-  useEffect(() => {
-    if (!triggerRef.current || nodePositions.length === 0) return;
-
-    // 1. Winding vine drawing animation
-    let vineAnim: gsap.core.Tween | undefined;
-    if (pathRef.current) {
-      const path = pathRef.current;
-      const length = path.getTotalLength();
-
-      // Initialize path stroke dash offset
-      path.style.strokeDasharray = `${length}`;
-      path.style.strokeDashoffset = `${length}`;
-
-      vineAnim = gsap.to(path, {
-        strokeDashoffset: 0,
-        ease: "none",
+    const ctx = gsap.context(() => {
+      // Main pinned notebook timeline
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top 35%",
-          end: "bottom 65%",
-          scrub: 1,
+          trigger: containerRef.current,
+          start: "top top",
+          end: `+=${totalPages * 1000}`,
+          pin: true,
+          scrub: 0.8,
+          onUpdate: (self) => {
+            const idx = Math.min(
+              Math.floor(self.progress * totalPages),
+              totalPages - 1
+            );
+            setActivePageIndex(idx);
+          },
         },
       });
-    }
 
-    // 2. Fading in steps and triggering active step flower blooming
-    const stepsCtx = gsap.context(() => {
-      const stepItems = gsap.utils.toArray(".process-step");
-      stepItems.forEach((step, idx) => {
-        const target = step as HTMLElement;
-        gsap.fromTo(
-          target,
-          { opacity: 0.1, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            scrollTrigger: {
-              trigger: target,
-              start: "top 75%",
-              end: "top 35%",
-              scrub: true,
-              // Bloom flower when scrolling down past node
-              onEnter: () => {
-                setActiveSteps((prev) => {
-                  const next = [...prev];
-                  next[idx] = true;
-                  return next;
-                });
-              },
-              // Un-bloom flower when scrolling back up above node
-              onLeaveBack: () => {
-                setActiveSteps((prev) => {
-                  const next = [...prev];
-                  next[idx] = false;
-                  return next;
-                });
-              },
-            },
-          }
-        );
+      // Animate authentic page flips in sequence
+      pageElements.forEach((page, i) => {
+        if (i === totalPages - 1) return;
+
+        tl.to(page, {
+          rotateY: -168,
+          scale: 0.97,
+          ease: "power1.inOut",
+          duration: 1,
+        });
       });
     }, containerRef);
 
-    return () => {
-      vineAnim?.scrollTrigger?.kill();
-      stepsCtx.revert();
-    };
-  }, [nodePositions]);
-
-  // Generate Bezier path coordinates winding between nodes
-  const getSvgPath = () => {
-    if (nodePositions.length === 0) return "";
-
-    const isMobile = windowWidth < 768;
-    const cx = isMobile ? 15 : (containerRef.current?.clientWidth || 1000) / 2;
-    const waveWidth = isMobile ? 12 : 110;
-
-    // Start path slightly above the first node
-    let d = `M ${cx} 0`;
-
-    const y0 = nodePositions[0];
-    const cp0x = isMobile ? cx + 6 : cx - waveWidth;
-    d += ` C ${cp0x} ${y0 * 0.3}, ${cp0x} ${y0 * 0.7}, ${cx} ${y0}`;
-
-    // Loop through step nodes
-    for (let i = 0; i < nodePositions.length - 1; i++) {
-      const yStart = nodePositions[i];
-      const yEnd = nodePositions[i + 1];
-      const dy = yEnd - yStart;
-
-      // On mobile, curve slightly to the right (towards card content)
-      // On desktop, alternate curve left/right based on card layout
-      const dir = isMobile ? 1 : (i % 2 === 0 ? 1 : -1);
-
-      const cp1x = cx + dir * waveWidth;
-      const cp1y = yStart + dy * 0.35;
-      const cp2x = cp1x;
-      const cp2y = yEnd - dy * 0.35;
-
-      d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${cx} ${yEnd}`;
-    }
-
-    // Extend path slightly below the last node
-    const yLast = nodePositions[nodePositions.length - 1];
-    const cpLastx = isMobile ? cx + 6 : cx + ((nodePositions.length - 1) % 2 === 0 ? -waveWidth : waveWidth);
-    const endY = yLast + 80;
-    d += ` C ${cpLastx} ${yLast + 25}, ${cpLastx} ${yLast + 55}, ${cx} ${endY}`;
-
-    return d;
-  };
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
       id="process"
       ref={containerRef}
-      className="relative py-24 md:py-36 bg-white overflow-hidden border-t border-black/5"
+      className="relative h-screen w-screen bg-[#faf8f5] text-zinc-900 overflow-hidden border-t border-zinc-200 flex flex-col justify-center items-center select-none"
     >
-      {/* Dynamic Winding Vine SVG Background */}
-      {nodePositions.length > 0 && (
-        <svg className="absolute inset-x-0 top-0 w-full h-full pointer-events-none z-0">
-          <defs>
-            <linearGradient id="vineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#00c078" />
-              <stop offset="100%" stopColor="#0284c7" />
-            </linearGradient>
-          </defs>
-          {/* Subtle background path track */}
-          <path
-            d={getSvgPath()}
-            fill="none"
-            stroke="rgba(0, 0, 0, 0.05)"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Animated vine path */}
-          <path
-            ref={pathRef}
-            d={getSvgPath()}
-            fill="none"
-            stroke="url(#vineGradient)"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              filter: "drop-shadow(0 0 5px rgba(0, 192, 120, 0.3))",
-            }}
-          />
-        </svg>
-      )}
+      {/* Authentic Soft Notebook Desk Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.01)_0%,rgba(0,0,0,0.04)_100%)] pointer-events-none" />
 
-      <div className="mx-auto max-w-5xl px-6 md:px-12 relative z-10">
-        {/* Header info */}
-        <div className="flex flex-col gap-4 text-center items-center mb-20 md:mb-28">
-          <span className="font-sans text-xs font-semibold tracking-widest text-emerald-600 uppercase">
-            Our Flow
+      {/* Header Info */}
+      <div className="relative z-20 flex flex-col items-center text-center gap-2 mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-zinc-200 text-emerald-700 text-xs font-mono font-bold uppercase tracking-widest shadow-sm">
+          <BookOpen className="h-3.5 w-3.5" /> Authentic Notebook Flip
+        </div>
+        <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-zinc-950 tracking-tight">
+          The Process{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">
+            Notebook
           </span>
-          <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight text-zinc-950">
-            The Shape-Shifting{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#0284c7]">
-              Process
-            </span>
-          </h2>
-          <p className="font-sans text-base text-zinc-600 max-w-lg mt-2">
-            How we adapt our teams to bring your product from blueprint to global scale.
-          </p>
+        </h2>
+        <p className="font-sans text-xs sm:text-sm text-zinc-600 max-w-md">
+          Scroll down to turn the pages and see how we adapt your project step-by-step.
+        </p>
+      </div>
+
+      {/* Authentic Light Notebook Stage */}
+      <div className="relative w-[94vw] max-w-5xl h-[560px] sm:h-[620px] rounded-3xl bg-[#f2ede4] border border-zinc-300 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.12)] p-4 sm:p-7 z-10 [perspective:2000px] flex items-center justify-center">
+
+        {/* Wire Coil Spiral Binding Rings on Left Spine */}
+        <div className="absolute left-3 sm:left-6 top-8 bottom-8 z-50 flex flex-col justify-between pointer-events-none">
+          {[...Array(12)].map((_, rIdx) => (
+            <div key={rIdx} className="flex items-center gap-1">
+              <div className="w-7 h-3 rounded-full bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-500 shadow-sm border border-zinc-400" />
+              <div className="w-2.5 h-2.5 rounded-full bg-zinc-700 shadow-inner" />
+            </div>
+          ))}
         </div>
 
-        {/* Steps Container */}
-        <div ref={triggerRef} className="relative flex flex-col gap-24 md:gap-32 pl-8 md:pl-0">
-          {steps.map((step, idx) => {
-            const IconComponent = step.icon;
-            const isEven = idx % 2 === 0;
+        {/* Notebook Page Stack Deck */}
+        <div className="relative w-full h-full rounded-2xl bg-white border border-zinc-300 shadow-xl overflow-visible pl-12 sm:pl-16 pr-6 sm:pr-10 py-6 sm:py-8 flex flex-col justify-between">
+
+          {pages.map((page, idx) => {
+            const IconComponent = page.icon;
 
             return (
               <div
-                key={step.num}
-                className={`process-step relative flex flex-col md:flex-row items-start ${
-                  isEven ? "md:flex-row-reverse" : ""
-                }`}
+                key={page.num}
+                ref={(el) => {
+                  pageRefs.current[idx] = el;
+                }}
+                className="absolute inset-y-0 right-0 left-12 sm:left-16 rounded-r-2xl border-l-2 border-zinc-300/80 p-6 sm:p-10 flex flex-col justify-between text-left shadow-[-12px_0_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 overflow-hidden group"
+                style={{
+                  backgroundColor: page.paperBg,
+                  zIndex: pages.length - idx,
+                  transformOrigin: "left center",
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                }}
+                data-cursor="FLIP"
               >
-                {/* Content Block */}
-                <div className={`w-full md:w-1/2 flex ${isEven ? "md:justify-start md:pl-16" : "md:justify-end md:pr-16"}`}>
-                  <div className="bg-zinc-50/80 hover:bg-white rounded-2xl p-6 md:p-8 border border-zinc-200 flex flex-col gap-4 text-left max-w-md w-full relative group hover:border-emerald-500/30 hover:shadow-xl transition-all duration-300 shadow-sm">
-                    <span className="font-display text-3xl font-extrabold text-zinc-200 group-hover:text-emerald-500/20 transition-colors duration-300 absolute top-4 right-4">
-                      {step.num}
-                    </span>
-                    <div className="rounded-xl bg-white p-3 text-emerald-600 max-w-max border border-zinc-200 shadow-sm group-hover:border-emerald-500/30 transition-all duration-300">
+                {/* Lined Notebook Paper Rule lines */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_27px,#e5e7eb_28px)] bg-[size:100%_28px] pointer-events-none opacity-50" />
+
+                {/* Vertical Red Margin Line */}
+                <div className="absolute top-0 bottom-0 left-8 sm:left-12 w-[1.5px] bg-rose-400/70 pointer-events-none" />
+
+                {/* Subtle Dog-Ear Corner Fold */}
+                <div className="absolute top-0 right-0 w-10 h-10 bg-amber-50/90 border-l border-b border-zinc-300 rounded-bl-xl shadow-inner pointer-events-none group-hover:bg-amber-100 transition-colors" />
+
+                {/* Page Header */}
+                <div className="flex justify-between items-center relative z-10 border-b border-zinc-300/80 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="rounded-2xl p-3 text-white flex items-center justify-center shadow-md"
+                      style={{ backgroundColor: page.color }}
+                    >
                       <IconComponent className="h-5 w-5" />
                     </div>
-                    <h3 className="font-display text-xl font-bold text-zinc-950">
-                      {step.title}
-                    </h3>
-                    <p className="font-sans text-sm text-zinc-600 leading-relaxed">
-                      {step.desc}
-                    </p>
+                    <div>
+                      <span className="font-mono text-xs font-bold text-zinc-500 tracking-widest uppercase block">
+                        {page.subtitle}
+                      </span>
+                      <h3 className="font-display text-xl sm:text-3xl font-extrabold text-zinc-950 mt-0.5">
+                        {page.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="font-display text-3xl sm:text-4xl font-black text-zinc-300">
+                      PAGE {page.num}
+                    </span>
                   </div>
                 </div>
 
-                {/* Center Node dot / Blooming Flower (desktop: centered, mobile: aligned left) */}
-                <div
-                  ref={(el) => {
-                    nodeRefs.current[idx] = el;
-                  }}
-                  className={`absolute left-[15px] md:left-1/2 top-6 -translate-x-1/2 h-8 w-8 rounded-full bg-white border transition-colors duration-500 flex items-center justify-center z-10 shadow-sm ${
-                    activeSteps[idx] ? "border-emerald-500/80" : "border-zinc-300"
-                  }`}
-                >
-                  {/* Central seed dot */}
-                  <span
-                    className={`h-2.5 w-2.5 rounded-full transition-all duration-500 ${
-                      activeSteps[idx]
-                        ? "bg-emerald-500 scale-110 shadow-[0_0_8px_var(--accent-color)]"
-                        : "bg-zinc-300"
-                    }`}
-                  />
-                  {/* Blooming flower petals & glow */}
-                  <ModernFlower isActive={activeSteps[idx]} />
+                {/* Page Main Content Paragraph */}
+                <div className="relative z-10 flex-1 flex flex-col justify-center py-4">
+                  <p className="font-sans text-sm sm:text-base text-zinc-800 leading-relaxed font-normal max-w-2xl">
+                    {page.desc}
+                  </p>
+
+                  {/* Bullet Points / Checklist inside notebook */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+                    {page.details.map((item, dIdx) => (
+                      <div
+                        key={dIdx}
+                        className="bg-white/90 border border-zinc-300 rounded-xl p-3 flex items-center gap-2.5 text-xs font-sans font-semibold text-zinc-800 shadow-sm"
+                      >
+                        <CheckCircle2
+                          className="h-4 w-4 flex-shrink-0"
+                          style={{ color: page.color }}
+                        />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Page Bottom Footer Bar */}
+                <div className="relative z-10 flex justify-between items-center border-t border-zinc-300/80 pt-3 text-[11px] font-mono text-zinc-500">
+                  <span>CHAMELEON EXEC NOTEBOOK // STEP 0{idx + 1}</span>
+                  <span className="flex items-center gap-1.5 font-bold text-zinc-800">
+                    TURN PAGE TO CONTINUE <ArrowRight className="h-3.5 w-3.5 text-emerald-600" />
+                  </span>
                 </div>
               </div>
             );
           })}
         </div>
+      </div>
+
+      {/* Notebook Bottom Page Indicator Dots */}
+      <div className="relative z-20 flex items-center gap-2 mt-5 bg-white px-4 py-2 rounded-full border border-zinc-300 shadow-sm">
+        {pages.map((p, idx) => (
+          <div
+            key={p.num}
+            className={`h-2 rounded-full transition-all duration-300 ${activePageIndex === idx
+                ? "w-7 bg-emerald-600 shadow-[0_0_8px_rgba(5,150,105,0.4)]"
+                : "w-2 bg-zinc-300"
+              }`}
+          />
+        ))}
       </div>
     </section>
   );
