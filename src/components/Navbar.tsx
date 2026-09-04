@@ -5,9 +5,11 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
+// Nav links ordered precisely as sections appear on the page
 const navLinks = [
-  { name: "About", href: "#about" },
+  { name: "Home", href: "#hero" },
   { name: "Philosophy", href: "#philosophy" },
+  { name: "About", href: "#about" },
   { name: "Portfolio", href: "#portfolio" },
   { name: "Industries", href: "#industries" },
   { name: "FAQ", href: "#faq" },
@@ -16,18 +18,23 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("hero");
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Background blur toggle on scroll
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // If near the top, highlight home/hero
+      if (currentScrollY < 150) {
+        setActiveSection("hero");
+      }
 
       // Calculate scroll progress percentage
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
-        setScrollProgress((window.scrollY / totalHeight) * 100);
+        setScrollProgress((currentScrollY / totalHeight) * 100);
       }
     };
 
@@ -36,7 +43,7 @@ export default function Navbar() {
     // Track active section with IntersectionObserver
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -60% 0px",
+      rootMargin: "-25% 0px -55% 0px",
       threshold: 0,
     };
 
@@ -63,7 +70,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top 2px Scroll Progress Accent Bar */}
+      {/* Top 2.5px Scroll Progress Accent Bar */}
       <div className="fixed top-0 left-0 right-0 z-[60] h-[2.5px] bg-transparent pointer-events-none">
         <div
           className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 transition-all duration-100 ease-out"
@@ -80,7 +87,7 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center select-none group">
+          <a href="#hero" className="flex items-center select-none group">
             <Image
               src="/logo.png"
               alt="Chameleon IT Services"
@@ -102,7 +109,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative px-4 py-1.5 rounded-full font-sans text-xs font-semibold tracking-wide transition-all duration-300 ${
                     isActive
-                      ? "bg-white text-emerald-700 shadow-sm border border-zinc-200/50"
+                      ? "bg-white text-emerald-700 shadow-sm border border-zinc-200/50 font-bold"
                       : "text-zinc-600 hover:text-zinc-950 hover:bg-white/60"
                   }`}
                 >
@@ -114,15 +121,20 @@ export default function Navbar() {
 
           {/* Medium screen Navigation fallback without pill background */}
           <nav className="hidden md:flex lg:hidden items-center gap-5">
-            {navLinks.slice(0, 5).map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="font-sans text-xs font-semibold text-zinc-600 hover:text-zinc-950 transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.replace("#", "");
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`font-sans text-xs font-semibold transition-colors ${
+                    isActive ? "text-emerald-600 font-bold" : "text-zinc-600 hover:text-zinc-950"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Action CTA Button */}
@@ -159,16 +171,23 @@ export default function Navbar() {
             className="fixed inset-x-0 top-[60px] z-40 bg-white/95 backdrop-blur-2xl px-6 pt-6 pb-8 border-b border-zinc-200 shadow-2xl flex flex-col gap-4 md:hidden"
           >
             <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-3 rounded-xl font-sans text-base font-medium text-zinc-700 hover:text-emerald-600 hover:bg-emerald-50/60 transition-all duration-200"
-                >
-                  {link.name}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace("#", "");
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-4 py-3 rounded-xl font-sans text-base transition-all duration-200 ${
+                      isActive
+                        ? "text-emerald-600 bg-emerald-50/80 font-bold"
+                        : "font-medium text-zinc-700 hover:text-emerald-600 hover:bg-emerald-50/60"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                );
+              })}
             </div>
 
             <div className="pt-3 border-t border-zinc-100 flex flex-col gap-3">
