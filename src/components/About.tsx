@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, useSpring, useMotionValue } from "framer-motion";
@@ -114,31 +115,24 @@ export default function About() {
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
             className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center cursor-grab active:cursor-grabbing group"
           >
-            {/* The Glowing Glass Sphere with Optimized Chameleon Mascot */}
-            <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full border border-zinc-200/90 bg-white/95 shadow-[0_20px_50px_-10px_rgba(0,192,120,0.20)] backdrop-blur-xl flex items-center justify-center p-6 overflow-visible">
-              {/* Outer soft ambient glow */}
-              <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-emerald-400/20 via-cyan-400/20 to-purple-400/15 blur-xl opacity-70 pointer-events-none -z-10 transition-opacity duration-500 group-hover:opacity-100" />
+            {/* The Glowing Glass Sphere */}
+            <div className="absolute w-48 h-48 sm:w-56 sm:h-56 rounded-full border border-zinc-200 bg-gradient-to-tr from-accent/10 via-white/80 to-[#0284c7]/10 shadow-[0_8px_40px_var(--accent-glow)] backdrop-blur-[6px] overflow-hidden flex items-center justify-center">
+              {/* Internal spinning light rings */}
+              <div className="absolute inset-2 rounded-full border border-dashed border-emerald-500/25 animate-spin-slow" />
+              <div className="absolute inset-8 rounded-full border border-dotted border-zinc-300 animate-pulse" />
+              <div className="w-10 h-10 rounded-full bg-emerald-500/20 filter blur-md animate-ping" />
 
-              {/* Internal spinning technical rings */}
-              <div className="absolute inset-2 rounded-full border border-dashed border-emerald-500/25 animate-spin-slow pointer-events-none" />
-              <div className="absolute inset-5 rounded-full border border-cyan-500/20 pointer-events-none" />
-
-              {/* Centered Optimized Chameleon Mascot Logo */}
-              <motion.div
-                style={{ transform: "translateZ(35px)" }}
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center z-10 select-none"
-              >
+              {/* Chameleon Mascot Image */}
+              <div className="relative w-32 h-32 sm:w-36 sm:h-36 z-10 flex items-center justify-center pointer-events-none select-none">
                 <Image
                   src="/CH.png"
                   alt="Chameleon Mascot"
-                  width={150}
-                  height={150}
+                  width={200}
+                  height={200}
                   priority
-                  className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,192,120,0.28)] transition-transform duration-300 group-hover:scale-108"
+                  className="w-full h-full object-contain drop-shadow-[0_8px_20px_rgba(0,192,120,0.3)] transition-transform duration-500 hover:scale-110"
                 />
-              </motion.div>
+              </div>
             </div>
 
             {/* Orbiting Stat 1: Top-Left */}
