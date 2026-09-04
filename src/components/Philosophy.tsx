@@ -56,25 +56,30 @@ export default function Philosophy() {
       },
     });
 
-    // Phase 1: Scroll-linked word highlight & smooth logo reveal on the left
+    // Phase 1: Scroll-linked word highlight & synchronized progressive logo revel
+    // Logo is faint (0.15) at 'At Chameleon', reaches ~50% at 'and drives', and hits 100% only at 'build it'
     tl.fromTo(
       ".chameleon-scroll-logo",
-      { opacity: 0, scale: 0.5, x: -70, rotate: -20 },
-      { opacity: 1, scale: 1, x: 0, rotate: 0, duration: 1.4, ease: "power2.out" },
+      { opacity: 0.155, scale: 0.10, x: -15 },
+      { opacity: 1, scale: 1, x: 0, duration: 3.2, ease: "power1.in" },
       0
     );
 
-    tl.to(
+    tl.fromTo(
       words,
+      { opacity: 0.2, color: "#d4d4d8" },
       {
         opacity: 1,
         color: "#09090b",
-        stagger: 0.12,
-        duration: 1.6,
-        ease: "power1.out",
+        stagger: 0.09,
+        duration: 1.1,
+        ease: "power1.inOut",
       },
       0
     );
+
+    // Pause briefly so the full text is clear and readable when scrolled
+    tl.to({}, { duration: 0.8 });
 
     // Fade out statement container
     tl.to(".statement-container", {
@@ -155,16 +160,14 @@ export default function Philosophy() {
         ].map((item) => (
           <div
             key={item.id}
-            className={`flex items-center gap-2 transition-all duration-300 ${
-              activeSlide === item.id ? "opacity-100" : "opacity-40"
-            }`}
-          >
-            <span
-              className={`h-2 rounded-full transition-all duration-300 ${
-                activeSlide === item.id
-                  ? "w-6 bg-gradient-to-r from-emerald-500 to-cyan-500"
-                  : "w-2 bg-zinc-400"
+            className={`flex items-center gap-2 transition-all duration-300 ${activeSlide === item.id ? "opacity-100" : "opacity-40"
               }`}
+          >
+            <div
+              className={`h-2 rounded-full transition-all duration-500 ${activeSlide === item.id
+                ? "w-8 bg-emerald-500 shadow-[0_0_10px_rgba(0,192,120,0.5)]"
+                : "w-2 bg-zinc-400"
+                }`}
             />
             {activeSlide === item.id && (
               <span className="font-sans text-[11px] font-bold text-zinc-900 uppercase tracking-wider">
@@ -177,49 +180,44 @@ export default function Philosophy() {
 
       {/* 3. Text & Content Overlays */}
       <div className="relative z-20 h-full w-full mx-auto max-w-7xl px-6 md:px-12 flex items-center justify-center">
-        
+
         {/* Phase 1: Scroll-reveal Statement */}
         <div
           ref={triggerRef}
           className="statement-container absolute inset-x-6 md:inset-x-12 flex flex-col justify-center items-center text-center max-w-5xl mx-auto"
         >
-          {/* Chameleon Logo emerging smoothly on scroll on the left */}
-          <div className="chameleon-scroll-logo absolute -left-4 sm:-left-12 lg:-left-24 top-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none opacity-0 z-20">
-            <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full bg-white/95 backdrop-blur-xl border border-zinc-200/90 shadow-[0_20px_50px_-10px_rgba(0,192,120,0.25)] flex items-center justify-center p-3">
-              {/* Outer soft multi-color glow */}
-              <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-emerald-400/25 via-cyan-400/25 to-purple-400/20 blur-xl opacity-80" />
-              {/* Rotating subtle dashed ring */}
-              <div className="absolute inset-1.5 rounded-full border border-dashed border-emerald-500/30 animate-spin-slow" />
-              {/* Official Mascot Image */}
-              <div className="relative w-16 h-16 sm:w-22 sm:h-22 lg:w-28 lg:h-28 flex items-center justify-center">
-                <Image
-                  src="/CH.png"
-                  alt="Chameleon Mascot"
-                  width={150}
-                  height={150}
-                  priority
-                  className="w-full h-full object-contain drop-shadow-[0_6px_16px_rgba(0,192,120,0.35)]"
-                />
-              </div>
-            </div>
-          </div>
-
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm">
             <Compass className="h-3.5 w-3.5" />
             Our Philosophy
           </div>
 
-          <p className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-bold tracking-tight text-zinc-300 leading-[1.35] max-w-4xl">
-            {wordSpans.map((word, idx) => (
-              <span
-                key={idx}
-                className="reveal-word inline-block mr-2.5 md:mr-3.5 transition-all duration-200 opacity-20"
-                style={{ color: "rgba(0,0,0,0.18)" }}
-              >
-                {word}
-              </span>
-            ))}
-          </p>
+          <div className="relative max-w-4xl w-full">
+            {/* Chameleon Mascot Logo cleanly placed right beside 'At' */}
+            <div className="chameleon-scroll-logo absolute -left-16 sm:-left-24 lg:-left-28 -top-6 sm:-top-9 lg:-top-11 flex flex-col items-center pointer-events-none opacity-15 z-20">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 flex items-center justify-center">
+                {/* Official Mascot Image */}
+                <Image
+                  src="/CH.png"
+                  alt="Chameleon Mascot"
+                  width={180}
+                  height={180}
+                  priority
+                  className="w-full h-full object-contain drop-shadow-md"
+                />
+              </div>
+            </div>
+
+            <p className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-bold tracking-tight leading-[1.35]">
+              {wordSpans.map((word, idx) => (
+                <span
+                  key={idx}
+                  className="reveal-word inline-block mr-2.5 md:mr-3.5 text-zinc-300 opacity-25"
+                >
+                  {word}
+                </span>
+              ))}
+            </p>
+          </div>
         </div>
 
         {/* Phase 2: Slide 01 - Design */}
@@ -251,7 +249,7 @@ export default function Philosophy() {
         {/* Phase 3: Slide 02 - Build */}
         <div className="slide-build absolute inset-0 opacity-0 pointer-events-none grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-center">
           <div className="lg:col-span-5 h-[30vh] lg:h-auto" />
-          
+
           <div className="lg:col-span-7 flex flex-col justify-center gap-6 text-left lg:text-right lg:items-end max-w-2xl pointer-events-auto lg:ml-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-bold uppercase tracking-wider max-w-max shadow-sm">
               <Layers className="h-3.5 w-3.5" />

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -112,7 +113,7 @@ export default function About() {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center cursor-grab active:cursor-grabbing"
+            className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center cursor-grab active:cursor-grabbing group"
           >
             {/* The Glowing Glass Sphere */}
             <div className="absolute w-48 h-48 sm:w-56 sm:h-56 rounded-full border border-zinc-200 bg-gradient-to-tr from-accent/10 via-white/80 to-[#0284c7]/10 shadow-[0_8px_40px_var(--accent-glow)] backdrop-blur-[6px] overflow-hidden flex items-center justify-center">

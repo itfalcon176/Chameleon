@@ -7,6 +7,9 @@ import { AnimatePresence } from "framer-motion";
 import LenisProvider from "@/components/LenisProvider";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
+import ScrollHUD from "@/components/ScrollHUD";
+import CustomCursor from "@/components/CustomCursor";
+import MarqueeTicker from "@/components/MarqueeTicker";
 
 // Page Sections
 import Hero from "@/components/Hero";
@@ -29,6 +32,9 @@ export default function Home() {
 
   return (
     <LenisProvider>
+      {/* Custom Magnetic Cursor */}
+      <CustomCursor />
+
       {/* Premium Loader screen */}
       <AnimatePresence mode="wait">
         {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
@@ -36,9 +42,13 @@ export default function Home() {
 
       {!isLoading && (
         <>
+          {/* GSAP Scroll HUD Progress Bar */}
+          <ScrollHUD />
+
           <Navbar />
           <main className="relative z-10">
             <Hero />
+            <MarqueeTicker />
             <Philosophy />
             <About />
             <Services />

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Sparkles } from "lucide-react";
 import Magnetic from "./Magnetic";
 
 const GithubIcon = () => (
@@ -22,10 +22,34 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-zinc-50 border-t border-zinc-200 pt-20 pb-10 overflow-hidden">
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-radial opacity-10 -z-10 pointer-events-none" />
+    <footer className="relative bg-zinc-950 text-white border-t border-white/10 pt-20 pb-10 overflow-hidden">
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       <div className="mx-auto max-w-7xl px-6 md:px-12">
+        {/* Giant Hero Text Callout */}
+        <div className="flex flex-col gap-4 text-center items-center py-12 border-b border-white/10 mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-bold uppercase tracking-widest">
+            <Sparkles className="h-3.5 w-3.5" /> Shape The Future With Us
+          </div>
+          <h2 className="font-display text-4xl sm:text-6xl md:text-8xl font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-500">
+            READY TO ADAPT?
+          </h2>
+          <p className="font-sans text-base md:text-lg text-zinc-400 max-w-lg mt-2">
+            Let&apos;s build an extraordinary digital presence for your brand.
+          </p>
+          <div className="mt-4">
+            <Magnetic>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 font-sans text-sm font-bold text-zinc-950 hover:shadow-[0_0_30px_rgba(0,245,155,0.4)] transition-all duration-300 shadow-lg"
+                data-cursor="START"
+              >
+                Launch Your Project Now 🚀
+              </a>
+            </Magnetic>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16">
           {/* Logo & Bio Column */}
           <div className="lg:col-span-5 flex flex-col gap-6 text-left">
@@ -35,22 +59,22 @@ export default function Footer() {
                 alt="Chameleon"
                 width={200}
                 height={42}
-                className="h-8 md:h-9 w-auto object-contain"
+                className="h-9 w-auto object-contain brightness-200"
               />
             </a>
 
-            <p className="font-sans text-sm text-zinc-600 leading-relaxed max-w-sm">
+            <p className="font-sans text-sm text-zinc-400 leading-relaxed max-w-sm">
               We shape-shift design and programming schemas to fit your brand guidelines and dominate markets across web, native desktop, mobile, video campaigns, and events.
             </p>
 
             <div className="flex gap-4">
-              <a href="#" className="h-9 w-9 rounded-full bg-white border border-zinc-200 hover:border-emerald-500 hover:text-emerald-600 flex items-center justify-center text-zinc-600 transition-colors shadow-sm">
+              <a href="#" className="h-10 w-10 rounded-full bg-white/5 border border-white/10 hover:border-emerald-400 hover:text-emerald-400 flex items-center justify-center text-zinc-400 transition-colors shadow-sm">
                 <GithubIcon />
               </a>
-              <a href="#" className="h-9 w-9 rounded-full bg-white border border-zinc-200 hover:border-emerald-500 hover:text-emerald-600 flex items-center justify-center text-zinc-600 transition-colors shadow-sm">
+              <a href="#" className="h-10 w-10 rounded-full bg-white/5 border border-white/10 hover:border-emerald-400 hover:text-emerald-400 flex items-center justify-center text-zinc-400 transition-colors shadow-sm">
                 <LinkedinIcon />
               </a>
-              <a href="#" className="h-9 w-9 rounded-full bg-white border border-zinc-200 hover:border-emerald-500 hover:text-emerald-600 flex items-center justify-center text-zinc-600 transition-colors shadow-sm">
+              <a href="#" className="h-10 w-10 rounded-full bg-white/5 border border-white/10 hover:border-emerald-400 hover:text-emerald-400 flex items-center justify-center text-zinc-400 transition-colors shadow-sm">
                 <TwitterIcon />
               </a>
             </div>
@@ -58,20 +82,20 @@ export default function Footer() {
 
           {/* Quick Links Column */}
           <div className="lg:col-span-3 text-left">
-            <h4 className="font-display text-sm font-bold text-zinc-950 uppercase tracking-wider mb-6">
+            <h4 className="font-display text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6">
               Navigation
             </h4>
             <div className="flex flex-col gap-3 font-sans text-sm">
-              <a href="#about" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">About Agency</a>
-              <a href="#services" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Our Services</a>
-              <a href="#process" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Process & Flow</a>
-              <a href="#portfolio" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Portfolio Work</a>
-              <a href="#reviews" className="text-zinc-600 hover:text-emerald-600 transition-colors duration-300">Google Reviews</a>
+              <a href="#about" className="text-zinc-400 hover:text-emerald-400 transition-colors duration-300">About Agency</a>
+              <a href="#services" className="text-zinc-400 hover:text-emerald-400 transition-colors duration-300">Our Services</a>
+              <a href="#process" className="text-zinc-400 hover:text-emerald-400 transition-colors duration-300">Process & Flow</a>
+              <a href="#portfolio" className="text-zinc-400 hover:text-emerald-400 transition-colors duration-300">Portfolio Work</a>
+              <a href="#reviews" className="text-zinc-400 hover:text-emerald-400 transition-colors duration-300">Google Reviews</a>
               <a
                 href="https://www.google.com/maps/place/Chameleon+IT+Academy+%7C+Digital+Marketing+%7C+Web+Developing+%7C+Graphic+Designing./@11.2831612,76.2357097,17z/data=!3m1!4b1!4m6!3m5!1s0x3ba63b25cc6dec37:0x865b8d22ffd054f2!8m2!3d11.2831612!4d76.2357097!16s%2Fg%2F11q4bqk33t?entry=ttu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-600 font-semibold hover:underline"
+                className="text-emerald-400 font-semibold hover:underline"
               >
                 📍 Nilambur, Kerala (Map)
               </a>
@@ -80,20 +104,20 @@ export default function Footer() {
 
           {/* Core Services Column */}
           <div className="lg:col-span-4 text-left">
-            <h4 className="font-display text-sm font-bold text-zinc-950 uppercase tracking-wider mb-6">
+            <h4 className="font-display text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6">
               Capabilities
             </h4>
-            <div className="flex flex-col gap-3 font-sans text-sm text-zinc-600">
-              <span className="hover:text-emerald-600 cursor-pointer transition-colors">Web Development</span>
-              <span className="hover:text-emerald-600 cursor-pointer transition-colors">Desktop App Development</span>
-              <span className="hover:text-emerald-600 cursor-pointer transition-colors">Mobile App Development</span>
-              <span className="hover:text-emerald-600 cursor-pointer transition-colors">UI/UX & Logo Design</span>
-              <span className="hover:text-emerald-600 cursor-pointer transition-colors">SEO & Event Management</span>
+            <div className="flex flex-col gap-3 font-sans text-sm text-zinc-400">
+              <span className="hover:text-emerald-400 cursor-pointer transition-colors">Web Development</span>
+              <span className="hover:text-emerald-400 cursor-pointer transition-colors">Desktop App Development</span>
+              <span className="hover:text-emerald-400 cursor-pointer transition-colors">Mobile App Development</span>
+              <span className="hover:text-emerald-400 cursor-pointer transition-colors">UI/UX & Logo Design</span>
+              <span className="hover:text-emerald-400 cursor-pointer transition-colors">SEO & Event Management</span>
             </div>
           </div>
         </div>
 
-        <div className="h-[1px] w-full bg-zinc-200" />
+        <div className="h-[1px] w-full bg-white/10" />
 
         {/* Bottom copyright row */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-6 pt-10 text-xs text-zinc-500 font-medium">
@@ -101,13 +125,14 @@ export default function Footer() {
             <span>© {new Date().getFullYear()} Chameleon IT Services. All Rights Reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-emerald-600 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-emerald-600 transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</a>
             
             <Magnetic>
               <button
                 onClick={scrollToTop}
-                className="h-10 w-10 rounded-full border border-zinc-300 bg-white hover:border-emerald-500 hover:text-emerald-600 flex items-center justify-center transition-all duration-300 shadow-sm"
+                className="h-10 w-10 rounded-full border border-white/10 bg-white/5 hover:border-emerald-400 hover:text-emerald-400 flex items-center justify-center transition-all duration-300 shadow-sm"
+                data-cursor="TOP"
               >
                 <ArrowUp className="h-4 w-4" />
               </button>
