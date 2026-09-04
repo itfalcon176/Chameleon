@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import gsap from "gsap";
@@ -119,6 +120,18 @@ export default function About() {
               <div className="absolute inset-2 rounded-full border border-dashed border-emerald-500/25 animate-spin-slow" />
               <div className="absolute inset-8 rounded-full border border-dotted border-zinc-300 animate-pulse" />
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 filter blur-md animate-ping" />
+
+              {/* Chameleon Mascot Image */}
+              <div className="relative w-32 h-32 sm:w-36 sm:h-36 z-10 flex items-center justify-center pointer-events-none select-none">
+                <Image
+                  src="/CH.png"
+                  alt="Chameleon Mascot"
+                  width={200}
+                  height={200}
+                  priority
+                  className="w-full h-full object-contain drop-shadow-[0_8px_20px_rgba(0,192,120,0.3)] transition-transform duration-500 hover:scale-110"
+                />
+              </div>
             </div>
 
             {/* Orbiting Stat 1: Top-Left */}

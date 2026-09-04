@@ -34,10 +34,12 @@ export const metadata: Metadata = {
     "Social Media Marketing",
     "Event Management",
   ],
-  authors: [{ name: "Chameleon Agency" }],
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/CH.png", href: "/CH.png" },
+    ],
+    shortcut: "/CH.png",
+    apple: "/CH.png",
   },
 };
 
