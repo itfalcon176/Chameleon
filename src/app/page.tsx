@@ -7,7 +7,6 @@ import { AnimatePresence } from "framer-motion";
 import LenisProvider from "@/components/LenisProvider";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
-import ScrollHUD from "@/components/ScrollHUD";
 import CustomCursor from "@/components/CustomCursor";
 import MarqueeTicker from "@/components/MarqueeTicker";
 
@@ -15,8 +14,6 @@ import MarqueeTicker from "@/components/MarqueeTicker";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
 import About from "@/components/About";
-import Services from "@/components/Services";
-import Process from "@/components/Process";
 import Portfolio from "@/components/Portfolio";
 import Industries from "@/components/Industries";
 import Testimonials from "@/components/Testimonials";
@@ -42,17 +39,12 @@ export default function Home() {
 
       {!isLoading && (
         <>
-          {/* GSAP Scroll HUD Progress Bar */}
-          <ScrollHUD />
-
           <Navbar />
           <main className="relative z-10">
             <Hero />
             <MarqueeTicker />
             <Philosophy />
             <About />
-            <Services />
-            <Process />
             <Portfolio />
             <Industries />
             <Testimonials />
